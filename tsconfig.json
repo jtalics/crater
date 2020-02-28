@@ -25,5 +25,8 @@
         "dist/material-dynamic-table/*"
       ]
     }
+  },
+  "angularCompilerOptions": {
+    "enableIvy": false
   }
 }
