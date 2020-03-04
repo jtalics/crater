@@ -11,6 +11,7 @@
     "copy": "cp README.md dist/material-dynamic-table",
     "build-lib": "ng build --prod material-dynamic-table && npm run copy"
   },
+  
   "private": true,
   "dependencies": {
     "@angular/animations": "^9.0.4",
