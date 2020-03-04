@@ -27,6 +27,9 @@ import {
 import {
   MatPaginatorModule
 } from '@angular/material/paginator';
+import {
+  MatCheckboxModule
+} from '@angular/material/checkbox';
 
 import { OptionsCellComponent } from './cells/options-cell/options-cell.component';
 
@@ -56,7 +59,8 @@ import { AppComponent } from './app.component';
     MatNativeDateModule,
     MatMenuModule,
     MatIconModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatCheckboxModule
   ],
   entryComponents: [
     OptionsCellComponent,  
@@ -66,6 +70,7 @@ import { AppComponent } from './app.component';
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {
   constructor(private readonly cellService: CellService, private readonly columnFilterService: ColumnFilterService) {
     cellService.registerCell('options', OptionsCellComponent);

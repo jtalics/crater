@@ -3,10 +3,11 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogConfig } from '@angular/material/dialog';
-import { DataSource } from '@angular/cdk/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { ColumnConfig } from './column-config.model';
 import { ColumnFilter } from './column-filter.model';
 import { ColumnFilterService } from './table-cell/cell-types/column-filter.service';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'mdt-dynamic-table',
@@ -16,12 +17,13 @@ import { ColumnFilterService } from './table-cell/cell-types/column-filter.servi
 export class DynamicTableComponent implements OnInit {
 
   @Input() columns: ColumnConfig[];
-  @Input() dataSource: DataSource<any>;
+  @Input() dataSource: MatTableDataSource<any>;
   @Input() pageSize = 20;
   @Input() pageSizeOptions = [20, 50, 100];
   @Input() showFilters = true;
   @Input() stickyHeader = false;
   @Input() paginator: MatPaginator;
+  @Input() selectionModel: SelectionModel<any>;
 
   displayedColumns: string[];
 
@@ -30,7 +32,10 @@ export class DynamicTableComponent implements OnInit {
 
   private appliedFilters: { [key: string]: any; } = {};
 
-  constructor(private readonly columnFilterService: ColumnFilterService, private readonly dialog: MatDialog) { }
+  constructor(
+    private readonly columnFilterService: ColumnFilterService, 
+    private readonly dialog: MatDialog
+  ) { }
 
   ngOnInit() {
     if (this.dataSource == null) {
@@ -44,7 +49,8 @@ export class DynamicTableComponent implements OnInit {
       this.paginator = this.internalPaginator;
     }
 
-    this.displayedColumns = this.columns.map((column, index) => this.prepareColumnName(column.name, index));
+    this.displayedColumns = 
+      this.columns.map((column, index) => this.prepareColumnName(column.name, index));
 
     const dataSource = this.dataSource as any;
     dataSource.sort = this.sort;
@@ -149,5 +155,27 @@ export class DynamicTableComponent implements OnInit {
     return this.columns.find(c =>
       (c.name ? c.name.toLowerCase() : c.name) === (columnName ? columnName.toLowerCase() : columnName)
     );
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selectionModel.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selectionModel.clear() :
+      this.dataSource.data.forEach(row => this.selectionModel.select(row));
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: any): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selectionModel.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 }

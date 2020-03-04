@@ -7,6 +7,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { DynamicTableComponent } from './dynamic-table.component';
 import { TableCellComponent } from './table-cell/table-cell.component';
@@ -32,7 +33,8 @@ import { DateCellComponent } from './table-cell/cell-types/date-cell.component';
     MatPaginatorModule,
     MatIconModule,
     MatDialogModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatCheckboxModule
   ],
   declarations: [
     DynamicTableComponent,

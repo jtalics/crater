@@ -1,19 +1,62 @@
 <table mat-table [dataSource]="dataSource"
-       matSort matSortDirection="asc">
+       matSort 
+       matSortDirection="asc"
+>
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selectionModel.hasValue() && isAllSelected()"
+                    [indeterminate]="selectionModel.hasValue() && !isAllSelected()"
+                    [aria-label]="checkboxLabel()">
+      </mat-checkbox>
+    </th>
+  </ng-container>
+  <ng-container>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selectionModel.toggle(row) : null"
+                    [checked]="selectionModel.isSelected(row)"
+                    [aria-label]="checkboxLabel(row)"
+      >
+      </mat-checkbox>
+    </td>
+  </ng-container>
 
-  <ng-container *ngFor="let column of columns; let i = index" matColumnDef="{{ prepareColumnName(column.name, i) }}"
-                [sticky]="column.sticky === 'start'" [stickyEnd]="column.sticky === 'end'">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="{{ prepareColumnName(column.name, i) }}" [disabled]="!column.name || column.sort === false">
+  <!--Set up the columns here-->
+  <ng-container 
+    *ngFor="let column of columns; let i = index" 
+    matColumnDef="{{ prepareColumnName(column.name, i) }}"
+    [sticky]="column.sticky === 'start'" 
+    [stickyEnd]="column.sticky === 'end'"
+  >
+    <th 
+      mat-header-cell 
+      *matHeaderCellDef 
+      mat-sort-header="{{ prepareColumnName(column.name, i) }}" 
+      [disabled]="!column.name || column.sort === false"
+    >
       {{ column.displayName }}
-      <button class="mat-sort-header-button" *ngIf="showFilters && canFilter(column)"
-              (click)="filter(column); $event.stopPropagation();"
-              matTooltip="{{ getFilterDescription(column) }}" matTooltipDisabled="{{ !getFilterDescription(column) }}">
+      <button 
+        class="mat-sort-header-button" 
+        *ngIf="showFilters && canFilter(column)"
+        (click)="filter(column); $event.stopPropagation();"
+        matTooltip="{{ getFilterDescription(column) }}" 
+        matTooltipDisabled="{{ !getFilterDescription(column) }}"
+      >
         <mat-icon color="{{ isFiltered(column) ? 'primary' : 'default' }}">filter_list</mat-icon>
       </button>
     </th>
-    <td mat-cell *matCellDef="let row"><mdt-table-cell [row]="row" [column]="column"></mdt-table-cell></td>
+    <td 
+      mat-cell 
+      *matCellDef="let row"><mdt-table-cell 
+      [row]="row" 
+      [column]="column"
+    >
+      </mdt-table-cell>
+    </td>
   </ng-container>
 
+  <!--Set up the rows here-->
   <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: [stickyHeader]"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
