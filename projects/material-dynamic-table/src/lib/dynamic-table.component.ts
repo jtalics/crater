@@ -23,7 +23,7 @@ export class DynamicTableComponent implements OnInit {
   @Input() showFilters = true;
   @Input() stickyHeader = false;
   @Input() paginator: MatPaginator;
-  @Input() selectionModel: SelectionModel<any>;
+  @Input() selectionModel: SelectionModel<any> = new SelectionModel<any>(true,[]);
 
   displayedColumns: string[];
 
@@ -49,8 +49,9 @@ export class DynamicTableComponent implements OnInit {
       this.paginator = this.internalPaginator;
     }
 
-    this.displayedColumns = 
+    this.displayedColumns =     
       this.columns.map((column, index) => this.prepareColumnName(column.name, index));
+    this.displayedColumns.unshift('select');
 
     const dataSource = this.dataSource as any;
     dataSource.sort = this.sort;
@@ -80,7 +81,7 @@ export class DynamicTableComponent implements OnInit {
     return filter.getDescription();
   }
 
-  prepareColumnName(name: string, columnNumber: number) {
+  prepareColumnName(name: string, columnNumber: number): string {
     return name || 'col' + columnNumber;
   }
 

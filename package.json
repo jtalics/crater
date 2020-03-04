@@ -4,14 +4,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build material-dynamic-table; ng build",
+    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "copy": "cp README.md dist/material-dynamic-table",
     "build-lib": "ng build --prod material-dynamic-table && npm run copy"
   },
-  
+
   "private": true,
   "dependencies": {
     "@angular/animations": "^9.0.4",

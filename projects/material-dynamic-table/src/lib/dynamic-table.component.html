@@ -2,16 +2,17 @@
        matSort 
        matSortDirection="asc"
 >
-  <ng-container matColumnDef="select">
+
+  <ng-container
+    matColumnDef="select">
     <th mat-header-cell *matHeaderCellDef>
       <mat-checkbox (change)="$event ? masterToggle() : null"
                     [checked]="selectionModel.hasValue() && isAllSelected()"
                     [indeterminate]="selectionModel.hasValue() && !isAllSelected()"
-                    [aria-label]="checkboxLabel()">
+                    [aria-label]="checkboxLabel()"
+      >
       </mat-checkbox>
     </th>
-  </ng-container>
-  <ng-container>
     <td mat-cell *matCellDef="let row">
       <mat-checkbox (click)="$event.stopPropagation()"
                     (change)="$event ? selectionModel.toggle(row) : null"
@@ -23,13 +24,13 @@
   </ng-container>
 
   <!--Set up the columns here-->
-  <ng-container 
+  <ng-container
     *ngFor="let column of columns; let i = index" 
     matColumnDef="{{ prepareColumnName(column.name, i) }}"
     [sticky]="column.sticky === 'start'" 
     [stickyEnd]="column.sticky === 'end'"
   >
-    <th 
+    <th
       mat-header-cell 
       *matHeaderCellDef 
       mat-sort-header="{{ prepareColumnName(column.name, i) }}" 
@@ -43,15 +44,20 @@
         matTooltip="{{ getFilterDescription(column) }}" 
         matTooltipDisabled="{{ !getFilterDescription(column) }}"
       >
-        <mat-icon color="{{ isFiltered(column) ? 'primary' : 'default' }}">filter_list</mat-icon>
+        <mat-icon color="{{ isFiltered(column) ? 'primary' : 'default' }}"
+        >
+          filter_list
+        </mat-icon>
       </button>
     </th>
     <td 
       mat-cell 
-      *matCellDef="let row"><mdt-table-cell 
-      [row]="row" 
-      [column]="column"
+      *matCellDef="let row"
     >
+      <mdt-table-cell 
+        [row]="row" 
+        [column]="column"
+      >
       </mdt-table-cell>
     </td>
   </ng-container>
