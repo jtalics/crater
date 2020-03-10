@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CellComponent, ColumnConfig } from 'material-dynamic-table';
-import { Product } from '../../product';
+import { Row } from 'projects/material-dynamic-table/src/lib/row';
 
 @Component({
     selector: 'ld-options-cell',
@@ -11,13 +11,20 @@ export class OptionsCellComponent implements CellComponent {
     column: ColumnConfig;
 
     @Input()
-    row: Product;
+    row: Row;
 
-    constructor() {}
+    constructor() {
+    }
 
     showDetails() {
-        const productName = this.row.product;
+        let s = 'Row is: {';
 
-        alert(`Product name is ${productName}.`);
+        // for (const [key, value] of this.row.cells) {
+        //     s += key + ' ' + value;
+        // }
+        s += this.row.toString();
+
+        s += '}';
+        alert(`${s}.`);
     }
 }

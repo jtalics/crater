@@ -3,11 +3,12 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogConfig } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { ColumnConfig } from './column-config.model';
 import { ColumnFilter } from './column-filter.model';
 import { ColumnFilterService } from './table-cell/cell-types/column-filter.service';
 import { SelectionModel } from '@angular/cdk/collections';
+import { Row } from './row';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'mdt-dynamic-table',
@@ -16,19 +17,29 @@ import { SelectionModel } from '@angular/cdk/collections';
 })
 export class DynamicTableComponent implements OnInit {
 
-  @Input() columns: ColumnConfig[];
-  @Input() dataSource: MatTableDataSource<any>;
-  @Input() pageSize = 20;
-  @Input() pageSizeOptions = [20, 50, 100];
-  @Input() showFilters = true;
-  @Input() stickyHeader = false;
-  @Input() paginator: MatPaginator;
-  @Input() selectionModel: SelectionModel<any> = new SelectionModel<any>(true,[]);
+  @Input() 
+  columnConfigs: ColumnConfig[];
+  @Input() 
+  dataSource: MatTableDataSource<Row>;
+  @Input() 
+  pageSize = 20;
+  @Input() 
+  pageSizeOptions = [20, 50, 100];
+  @Input() 
+  showFilters = true;
+  @Input() 
+  stickyHeader = false;
+  @Input() 
+  paginator: MatPaginator;
+  @Input() 
+  selectionModel: SelectionModel<any> = new SelectionModel<any>(true, []);
 
   displayedColumns: string[];
 
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true }) private internalPaginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) 
+  sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) 
+  private internalPaginator: MatPaginator;
 
   private appliedFilters: { [key: string]: any; } = {};
 
@@ -41,7 +52,7 @@ export class DynamicTableComponent implements OnInit {
     if (this.dataSource == null) {
       throw Error('DynamicTable must be provided with data source.');
     }
-    if (this.columns == null) {
+    if (this.columnConfigs == null) {
       throw Error('DynamicTable must be provided with column definitions.');
     }
 
@@ -50,7 +61,7 @@ export class DynamicTableComponent implements OnInit {
     }
 
     this.displayedColumns =     
-      this.columns.map((column, index) => this.prepareColumnName(column.name, index));
+      this.columnConfigs.map((column, index) => this.prepareColumnName(column.name, index));
     this.displayedColumns.unshift('select');
 
     const dataSource = this.dataSource as any;
@@ -153,7 +164,7 @@ export class DynamicTableComponent implements OnInit {
   }
 
   private getColumnByName(columnName: string): ColumnConfig {
-    return this.columns.find(c =>
+    return this.columnConfigs.find(c =>
       (c.name ? c.name.toLowerCase() : c.name) === (columnName ? columnName.toLowerCase() : columnName)
     );
   }
@@ -173,10 +184,10 @@ export class DynamicTableComponent implements OnInit {
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: any): string {
+  checkboxLabel(row?: Row): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selectionModel.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+    return `${this.selectionModel.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
 }

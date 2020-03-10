@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CellService } from './cell.service';
+import { CellTypeService } from './cell-type-service';
 
-describe('CellService', () => {
+describe('CellTypeService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     providers: [        
-      CellService
+      CellTypeService
     ]
   }));
 
   it('should be created', () => {
-    const service: CellService = TestBed.get(CellService);
+    const service: CellTypeService = TestBed.inject(CellTypeService);
     expect(service).toBeTruthy();
   });
 });

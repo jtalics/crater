@@ -16,7 +16,8 @@ export class DateFilterComponent implements OnInit {
 
     public constructor(
         private readonly dialogRef: MatDialogRef<DateFilterComponent>,
-        @Inject(MAT_DIALOG_DATA) private readonly filterData: ColumnFilter) { }
+        @Inject(MAT_DIALOG_DATA) private readonly filterData: ColumnFilter) { 
+    }
 
     ngOnInit() {
         this.displayName = this.filterData.column.displayName;

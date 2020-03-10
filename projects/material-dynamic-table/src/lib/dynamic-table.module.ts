@@ -12,11 +12,11 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { DynamicTableComponent } from './dynamic-table.component';
 import { TableCellComponent } from './table-cell/table-cell.component';
 
-import { CellService } from './table-cell/cell-types/cell.service';
+import { CellTypeService } from './table-cell/cell-types/cell-type-service';
 import { CellDirective } from './table-cell/cell.directive';
 import { ColumnFilterService } from './table-cell/cell-types/column-filter.service';
 
-export { CellService, CellDirective, ColumnFilterService };
+export { CellTypeService, CellDirective, ColumnFilterService };
 export { CellComponent } from './table-cell/cell-types/cell.component';
 export { ColumnFilter } from './column-filter.model';
 export { ColumnConfig } from './column-config.model';
@@ -49,13 +49,13 @@ import { DateCellComponent } from './table-cell/cell-types/date-cell.component';
     DateCellComponent
   ],
   providers: [
-    CellService,
+    CellTypeService,
     ColumnFilterService
   ]
 })
 export class DynamicTableModule {
-  constructor(private readonly cellService: CellService) {
-    cellService.registerCell('string', TextCellComponent);
-    cellService.registerCell('date', DateCellComponent);
+  constructor(private readonly cellTypeService: CellTypeService) {
+    cellTypeService.registerCellType('string', TextCellComponent);
+    cellTypeService.registerCellType('date', DateCellComponent);
   }
 }
